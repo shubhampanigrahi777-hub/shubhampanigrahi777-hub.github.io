@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Aaykar — Accounting & Bookkeeping Consultancy</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#0a1628;--blue:#1a56db;--bl:#3b7ef8;--sky:#e8f0fe;--gold:#c9a84c;--white:#fff;--gray:#f5f7fb;--text:#1a2340;--muted:#5a6580;--bdr:#dde3f0;}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;color:var(--text);background:var(--white);overflow-x:hidden}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,0.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--bdr);padding:0 5%}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:68px}
+.nl{display:flex;gap:2rem;list-style:none}
+.nl a{text-decoration:none;color:var(--muted);font-size:.92rem;font-weight:500;transition:color .2s}
+.nl a:hover{color:var(--blue)}
+.nr{display:flex;gap:10px;align-items:center}
+.btn-ln{background:transparent;color:var(--navy);border:1px solid var(--bdr);padding:8px 20px;border-radius:6px;font-size:.88rem;font-weight:500;cursor:pointer;transition:all .2s;font-family:inherit}
+.btn-ln:hover{border-color:var(--blue);color:var(--blue)}
+.btn-su{background:var(--blue);color:#fff;border:none;padding:9px 22px;border-radius:6px;font-size:.9rem;font-weight:500;cursor:pointer;font-family:inherit;transition:background .2s}
+.btn-su:hover{background:var(--bl)}
+.hbg{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none}
+.hbg span{width:24px;height:2px;background:var(--navy);border-radius:2px}
+.uavt{width:32px;height:32px;background:var(--blue);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.8rem;font-weight:600}
+.btn-lo{background:none;border:none;color:var(--muted);font-size:.82rem;cursor:pointer;text-decoration:underline;font-family:inherit}
+
+/* ── MODALS ── */
+.ov{display:none;position:fixed;inset:0;background:rgba(10,22,40,.78);z-index:999;align-items:center;justify-content:center}
+.ov.open{display:flex}
+.mb{background:#fff;border-radius:20px;padding:2.5rem;width:100%;max-width:430px;margin:1rem;position:relative;animation:su .3s ease}
+@keyframes su{from{transform:translateY(28px);opacity:0}to{transform:none;opacity:1}}
+.mc{position:absolute;top:1rem;right:1.2rem;background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--muted)}
+.mtabs{display:flex;margin-bottom:1.8rem;border-bottom:2px solid var(--bdr)}
+.mtab{flex:1;padding:.75rem;background:none;border:none;font-size:.94rem;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s;font-family:inherit}
+.mtab.on{color:var(--blue);border-bottom-color:var(--blue)}
+.mttl{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--navy);margin-bottom:.3rem}
+.msub{font-size:.85rem;color:var(--muted);margin-bottom:1.5rem}
+.fg{margin-bottom:1rem}
+.fg label{display:block;font-size:.83rem;font-weight:500;color:var(--text);margin-bottom:4px}
+.fg input{width:100%;padding:10px 14px;border:1px solid var(--bdr);border-radius:8px;font-size:.92rem;color:var(--text);outline:none;transition:border-color .2s;font-family:inherit}
+.fg input:focus{border-color:var(--blue)}
+.btn-auth{width:100%;background:var(--blue);color:#fff;border:none;padding:12px;border-radius:8px;font-size:.94rem;font-weight:500;cursor:pointer;font-family:inherit;transition:background .2s}
+.btn-auth:hover{background:var(--bl)}
+.aerr{color:#e24b4a;font-size:.82rem;margin-top:6px;display:none}
+
+/* ── WELCOME POPUP ── */
+.wp{display:none;position:fixed;inset:0;background:rgba(10,22,40,.78);z-index:998;align-items:center;justify-content:center}
+.wp.open{display:flex}
+.wbox{background:#fff;border-radius:20px;padding:2.5rem;width:100%;max-width:460px;margin:1rem;text-align:center;animation:su .3s ease}
+.wbox h2{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--navy);margin:.8rem 0 .5rem}
+.wbox p{color:var(--muted);font-size:.9rem;line-height:1.7;margin-bottom:1.4rem}
+.tpills{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:1.4rem}
+.tpill{background:var(--sky);color:var(--blue);padding:6px 14px;border-radius:100px;font-size:.82rem;font-weight:500}
+.btn-go{background:var(--blue);color:#fff;border:none;padding:12px 32px;border-radius:8px;font-size:.93rem;font-weight:500;cursor:pointer;font-family:inherit}
+
+/* ── DASHBOARD ── */
+.dash{display:none;padding:90px 5% 60px;background:var(--gray);min-height:100vh}
+.dash.open{display:block}
+.dh{max-width:1200px;margin:0 auto 2rem}
+.dh h2{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--navy)}
+.dh p{color:var(--muted);font-size:.92rem;margin-top:.2rem}
+.ttabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:2rem;max-width:1200px;margin-left:auto;margin-right:auto}
+.ttb{padding:10px 22px;border-radius:8px;border:1px solid var(--bdr);background:#fff;font-size:.88rem;font-weight:500;color:var(--muted);cursor:pointer;transition:all .2s;font-family:inherit}
+.ttb.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.tpanel{display:none;max-width:1200px;margin:0 auto}
+.tpanel.on{display:block}
+
+/* ── TOOL CARDS ── */
+.tc{background:#fff;border:1px solid var(--bdr);border-radius:16px;padding:2rem;margin-bottom:1.5rem}
+.tc h3{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--navy);margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--bdr)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.2rem}
+.g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:1.2rem}
+.ig{margin-bottom:.9rem}
+.ig label{display:block;font-size:.78rem;font-weight:600;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
+.ig input,.ig select,.ig textarea{width:100%;padding:9px 13px;border:1px solid var(--bdr);border-radius:8px;font-size:.9rem;color:var(--text);outline:none;transition:border-color .2s;font-family:inherit;background:#fff}
+.ig input:focus,.ig select:focus,.ig textarea:focus{border-color:var(--blue)}
+.ig textarea{resize:vertical}
+.rtog{display:flex;border:1px solid var(--bdr);border-radius:8px;overflow:hidden;margin-bottom:1rem}
+.rb{flex:1;padding:9px;background:#fff;border:none;font-size:.85rem;font-weight:500;color:var(--muted);cursor:pointer;transition:all .2s;font-family:inherit}
+.rb.on{background:var(--blue);color:#fff}
+.cb{background:var(--blue);color:#fff;border:none;padding:11px 26px;border-radius:8px;font-size:.92rem;font-weight:500;cursor:pointer;transition:background .2s;font-family:inherit;margin-top:.5rem}
+.cb:hover{background:var(--bl)}
+.sec-head{font-size:.75rem;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:1.5px;padding:8px 0 4px;border-bottom:1px solid var(--sky);margin:1rem 0 .8rem;grid-column:1/-1}
+.info-box{background:var(--sky);border-radius:8px;padding:.9rem 1.1rem;margin-bottom:1rem;font-size:.83rem;color:#1a56db;font-weight:500}
+
+/* ── TAX RESULTS ── */
+.rcmp{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.2rem}
+.rc{border-radius:12px;padding:1.2rem;text-align:center}
+.rc.old{background:#fff8e1;border:1.5px solid #e8c84c}
+.rc.new{background:#e8f0fe;border:1.5px solid var(--blue)}
+.rctit{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:.3rem}
+.rc.old .rctit{color:#b8860b}.rc.new .rctit{color:var(--blue)}
+.rcamt{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700}
+.rc.old .rcamt{color:#7a5800}.rc.new .rcamt{color:var(--navy)}
+.bst{background:#4caf50;color:#fff;font-size:.68rem;padding:2px 8px;border-radius:100px;margin-top:5px;display:inline-block}
+.rbox{background:var(--sky);border-radius:12px;padding:1.4rem;margin-top:1rem}
+.rbox h4{font-size:.75rem;color:var(--blue);font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.8rem}
+.rr{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(26,86,219,.09);font-size:.87rem}
+.rr:last-child{border:none}
+.rr.bold{font-weight:600;color:var(--navy);font-size:.93rem;border-top:2px solid rgba(26,86,219,.2)!important;padding-top:8px;margin-top:4px}
+.rr.grn{color:#2e7d32;font-weight:600}
+.rr.ind{padding-left:1rem;font-size:.82rem;color:var(--muted)}
+
+/* ── LOGO UPLOAD ── */
+.logo-up{border:2px dashed var(--bdr);border-radius:10px;padding:1.2rem;text-align:center;cursor:pointer;transition:border-color .2s;margin-bottom:.9rem;background:#fafafa}
+.logo-up:hover{border-color:var(--blue)}
+.logo-up input{display:none}
+.logo-up-label{font-size:.85rem;color:var(--muted);cursor:pointer}
+.logo-preview{max-height:60px;max-width:180px;object-fit:contain;margin-top:.5rem}
+
+/* ── PRINT AREA ── */
+.print-area{background:#fff;border:2px solid var(--bdr);border-radius:12px;padding:2rem;margin-top:1.2rem;font-size:.87rem}
+.prt-btn{background:var(--navy);color:#fff;border:none;padding:10px 22px;border-radius:8px;font-size:.87rem;cursor:pointer;margin-top:1rem;font-family:inherit;transition:background .2s}
+.prt-btn:hover{background:#1a2a50}
+
+/* ── SALARY SLIP PRINT LAYOUT ── */
+.slip-wrap{font-family:Arial,sans-serif;font-size:12px;color:#111;background:#fff;max-width:780px}
+.slip-header{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #0a1628;padding-bottom:12px;margin-bottom:12px}
+.slip-org{font-size:16px;font-weight:700;color:#0a1628}
+.slip-addr{font-size:10px;color:#555;margin-top:3px}
+.slip-title{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#1a56db;background:#e8f0fe;padding:4px 12px;border-radius:100px}
+.slip-meta{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px 12px;margin-bottom:12px;padding:10px;background:#f5f7fb;border-radius:8px}
+.slip-meta .mk{color:#666;font-size:10px}
+.slip-meta .mv{font-weight:600;color:#0a1628;font-size:11px}
+.slip-tbl{width:100%;border-collapse:collapse;margin-bottom:10px}
+.slip-tbl th{background:#0a1628;color:#fff;padding:7px 10px;text-align:left;font-size:10px;font-weight:600}
+.slip-tbl td{padding:6px 10px;border-bottom:1px solid #e5e5e5;font-size:11px;vertical-align:middle}
+.slip-tbl .earn{background:#f9fff9}
+.slip-tbl .ded{background:#fff9f9}
+.slip-tbl .tot td{background:#e8f0fe;font-weight:700;border-top:2px solid #1a56db}
+.slip-net{background:#0a1628;color:#fff;border-radius:8px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.slip-net .nl-label{font-size:11px;opacity:.75}
+.slip-net .nl-amt{font-size:20px;font-weight:700;color:#c9a84c;font-family:'Playfair Display',Georgia,serif}
+.slip-note{font-size:10px;color:#888;text-align:center;margin-bottom:8px}
+.slip-sign{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;border-top:1px solid #ddd;padding-top:10px}
+.slip-sign .ss{text-align:center;font-size:10px;color:#666}
+.slip-sign .ss-line{border-bottom:1px solid #888;width:80%;margin:18px auto 4px}
+
+/* ── INVOICE PRINT LAYOUT ── */
+.inv-wrap{font-family:Arial,sans-serif;font-size:12px;color:#111;background:#fff;max-width:780px}
+.inv-top{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid #0a1628;padding-bottom:14px;margin-bottom:14px}
+.inv-from-block .company{font-size:15px;font-weight:700;color:#0a1628}
+.inv-from-block .addr{font-size:10px;color:#555;margin-top:3px;line-height:1.6;white-space:pre-wrap}
+.inv-badge{text-align:right}
+.inv-badge .word{font-family:'Playfair Display',Georgia,serif;font-size:28px;font-weight:700;color:#0a1628}
+.inv-badge .meta{font-size:10px;color:#555;margin-top:4px;line-height:1.7}
+.inv-bill{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:14px;padding:10px 14px;background:#f5f7fb;border-radius:8px}
+.inv-bill .bt{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#1a56db;margin-bottom:4px}
+.inv-bill .bn{font-weight:700;color:#0a1628;font-size:12px}
+.inv-bill .ba{font-size:10px;color:#555;margin-top:2px}
+.inv-tbl{width:100%;border-collapse:collapse;margin-bottom:10px}
+.inv-tbl th{background:#0a1628;color:#fff;padding:7px 10px;text-align:left;font-size:10px;font-weight:600}
+.inv-tbl td{padding:7px 10px;border-bottom:1px solid #e5e5e5;font-size:11px}
+.inv-tbl .nr{text-align:right}
+.inv-tbl tr:last-child td{border-bottom:none}
+.inv-totals{display:flex;justify-content:flex-end;margin-bottom:12px}
+.inv-tot-inner{width:260px}
+.inv-trow{display:flex;justify-content:space-between;padding:4px 0;font-size:11px;border-bottom:1px solid #eee}
+.inv-trow:last-child{font-weight:700;font-size:13px;color:#0a1628;border-top:2px solid #0a1628;border-bottom:none;padding-top:6px;margin-top:4px}
+.inv-bank{background:#f5f7fb;border-radius:8px;padding:10px 14px;margin-bottom:10px;font-size:10px}
+.inv-bank .bt{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#1a56db;margin-bottom:5px}
+.inv-bank-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 16px}
+.inv-bank .bk{color:#666}.inv-bank .bv{font-weight:600;color:#0a1628}
+.inv-footer-bar{display:flex;justify-content:space-between;align-items:flex-end;border-top:1px solid #ddd;padding-top:8px;font-size:10px;color:#888}
+.inv-sign-line{border-top:1px solid #888;width:160px;margin-bottom:4px}
+
+/* ── MAIN SITE ── */
+.hero{min-height:100vh;background:var(--navy);display:flex;align-items:center;position:relative;overflow:hidden;padding:0 5%}
+.hero::before{content:'';position:absolute;top:-200px;right:-200px;width:700px;height:700px;background:radial-gradient(circle,rgba(26,86,219,.25) 0%,transparent 70%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:-150px;left:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(201,168,76,.1) 0%,transparent 70%);pointer-events:none}
+.hgrid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none}
+.hi{max-width:1200px;margin:0 auto;width:100%;position:relative;z-index:1;padding-top:80px}
+.hbadge{display:inline-flex;align-items:center;gap:8px;background:rgba(26,86,219,.2);border:1px solid rgba(26,86,219,.4);color:#93b8ff;padding:6px 16px;border-radius:100px;font-size:.82rem;font-weight:500;margin-bottom:2rem;letter-spacing:.3px}
+.hbadge::before{content:'';width:7px;height:7px;background:#3b7ef8;border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+h1{font-family:'Playfair Display',serif;font-size:clamp(2.4rem,5vw,3.8rem);font-weight:700;color:#fff;line-height:1.2;margin-bottom:1.5rem;max-width:680px}
+h1 em{font-style:normal;color:var(--gold)}
+.hsub{font-size:1.05rem;color:rgba(255,255,255,.65);line-height:1.75;max-width:520px;margin-bottom:2.5rem}
+.hbtns{display:flex;gap:1rem;flex-wrap:wrap}
+.btp{background:var(--blue);color:#fff;padding:14px 30px;border-radius:8px;font-size:.95rem;font-weight:500;text-decoration:none;transition:all .2s;border:none;cursor:pointer;font-family:inherit}
+.btp:hover{background:var(--bl);transform:translateY(-1px)}
+.bto{background:transparent;color:#fff;padding:14px 30px;border-radius:8px;font-size:.95rem;font-weight:500;text-decoration:none;border:1px solid rgba(255,255,255,.3);transition:all .2s}
+.bto:hover{background:rgba(255,255,255,.08)}
+.hstats{display:flex;gap:3rem;margin-top:4rem;padding-top:3rem;border-top:1px solid rgba(255,255,255,.1);flex-wrap:wrap}
+.snum{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:#fff}
+.slbl{font-size:.85rem;color:rgba(255,255,255,.5);margin-top:2px}
+.tbar{background:var(--sky);padding:1.2rem 5%;border-bottom:1px solid var(--bdr)}
+.tbar-in{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:3rem;flex-wrap:wrap}
+.ti{display:flex;align-items:center;gap:8px;font-size:.85rem;color:var(--muted);font-weight:500}
+.ti svg{width:18px;height:18px;color:var(--blue)}
+section{padding:90px 5%}
+.si{max-width:1200px;margin:0 auto}
+.sl{font-size:.78rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue);margin-bottom:.8rem}
+.st{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:700;color:var(--navy);line-height:1.25;margin-bottom:1rem}
+.ss{font-size:1rem;color:var(--muted);line-height:1.8;max-width:560px}
+.sbg{background:var(--gray)}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:1.5rem;margin-top:3rem}
+.scard{background:#fff;border:1px solid var(--bdr);border-radius:14px;padding:2rem;transition:all .3s;position:relative;overflow:hidden;cursor:pointer}
+.scard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--blue);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.scard:hover{box-shadow:0 12px 40px rgba(26,86,219,.12);transform:translateY(-4px);border-color:var(--bl)}
+.scard:hover::before{transform:scaleX(1)}
+.sico{width:48px;height:48px;background:var(--sky);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:1.2rem}
+.sico svg{width:24px;height:24px;color:var(--blue)}
+.stitle{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:600;color:var(--navy);margin-bottom:.5rem}
+.sdesc{font-size:.88rem;color:var(--muted);line-height:1.7}
+.stag{display:inline-block;margin-top:.8rem;background:var(--sky);color:var(--blue);font-size:.72rem;font-weight:600;padding:3px 12px;border-radius:100px}
+.wg{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;margin-top:3rem}
+.wl{display:flex;flex-direction:column;gap:1.5rem}
+.wi{display:flex;gap:1rem;align-items:flex-start}
+.wn{min-width:36px;height:36px;background:var(--blue);color:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:600}
+.wt h4{font-weight:600;color:var(--navy);margin-bottom:3px;font-size:.95rem}
+.wt p{font-size:.87rem;color:var(--muted);line-height:1.6}
+.wvis{background:var(--navy);border-radius:20px;padding:2.5rem;position:relative;overflow:hidden}
+.wvis::before{content:'';position:absolute;top:-80px;right:-80px;width:250px;height:250px;background:radial-gradient(circle,rgba(26,86,219,.4),transparent 70%)}
+.kg{display:grid;grid-template-columns:1fr 1fr;gap:1rem;position:relative;z-index:1}
+.kc{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:1.2rem}
+.kv{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:#fff}
+.kl{font-size:.78rem;color:rgba(255,255,255,.5);margin-top:3px}
+.pbg{background:var(--gray)}
+.psteps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0;margin-top:3rem;position:relative}
+.psteps::before{content:'';position:absolute;top:28px;left:10%;right:10%;height:1px;background:var(--bdr);z-index:0}
+.pstep{text-align:center;padding:0 1rem;position:relative;z-index:1}
+.psn{width:56px;height:56px;background:var(--blue);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:#fff;margin:0 auto 1.2rem;border:4px solid var(--gray)}
+.pst{font-weight:600;color:var(--navy);margin-bottom:.4rem;font-size:.95rem}
+.psd{font-size:.85rem;color:var(--muted);line-height:1.6}
+.tgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:3rem}
+.tcard{background:#fff;border:1px solid var(--bdr);border-radius:14px;padding:1.8rem}
+.tstars{color:var(--gold);font-size:1rem;margin-bottom:1rem;letter-spacing:2px}
+.ttxt{font-size:.9rem;color:var(--muted);line-height:1.75;margin-bottom:1.2rem;font-style:italic}
+.tau{display:flex;align-items:center;gap:10px}
+.tav{width:40px;height:40px;border-radius:50%;background:var(--sky);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:.85rem;color:var(--blue)}
+.tnm{font-weight:600;font-size:.88rem;color:var(--navy)}
+.trl{font-size:.76rem;color:var(--muted)}
+.ctas{background:var(--navy);text-align:center;padding:90px 5%}
+.ctas h2{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3.5vw,2.6rem);color:#fff;margin-bottom:1rem}
+.ctas p{color:rgba(255,255,255,.6);font-size:1rem;margin-bottom:2rem;max-width:500px;margin-left:auto;margin-right:auto;line-height:1.75}
+.ctac{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;margin-top:3rem}
+.ctai{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:1.2rem 1.8rem;color:rgba(255,255,255,.8);font-size:.9rem;display:flex;align-items:center;gap:10px}
+.ctai svg{width:18px;height:18px;opacity:.6}
+footer{background:#06101f;padding:3rem 5% 2rem}
+.fi{max-width:1200px;margin:0 auto}
+.ft{display:flex;gap:4rem;flex-wrap:wrap;margin-bottom:2.5rem}
+.fb{flex:1;min-width:200px}
+.fTag{font-size:.84rem;color:rgba(255,255,255,.4);line-height:1.7;margin-top:.5rem}
+.fc h5{font-size:.78rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:1rem}
+.fc ul{list-style:none;display:flex;flex-direction:column;gap:.6rem}
+.fc a{color:rgba(255,255,255,.6);text-decoration:none;font-size:.86rem;transition:color .2s}
+.fc a:hover{color:#fff}
+.fbot{border-top:1px solid rgba(255,255,255,.07);padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.fcp{font-size:.8rem;color:rgba(255,255,255,.3)}
+.fdn{font-size:.8rem;color:var(--blue)}
+.fu{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.fu.vis{opacity:1;transform:none}
+@media(max-width:768px){
+  .nl,.btn-su{display:none}.hbg{display:flex}
+  .wg,.g2,.g3,.g4,.rcmp,.inv-bank-grid,.slip-sign{grid-template-columns:1fr}
+  .hstats{gap:2rem}.ft{flex-direction:column;gap:2rem}
+  .fbot{flex-direction:column;text-align:center}
+  .inv-top,.inv-bill{flex-direction:column;display:flex}
+}
+@media print{
+  nav,footer,.ttabs,.cb,.prt-btn,.logo-up,.dash .dh,
+  .ig,.g2,.g3,.g4,.ig label,.rtog,
+  #taxPanel,#salaryPanel .tc:first-child,#invoicePanel .tc:first-child,
+  .tpanel > .tc:first-child{display:none!important}
+  body{background:#fff!important}
+  .dash{padding:0!important;background:#fff!important}
+  .tpanel{max-width:100%!important;margin:0!important}
+  .print-area{border:none!important;padding:0!important;margin:0!important;border-radius:0!important}
+  .slip-wrap,.inv-wrap{max-width:100%}
+  @page{margin:1.5cm}
+}
+</style>
+</head>
+<body>
+
+<!-- AUTH MODAL -->
+<div class="ov" id="authMod">
+  <div class="mb">
+    <button class="mc" onclick="closeAuth()">&times;</button>
+    <div class="mtabs">
+      <button class="mtab on" id="tLogin" onclick="switchTab('l')">Login</button>
+      <button class="mtab" id="tSignup" onclick="switchTab('s')">Sign Up</button>
+    </div>
+    <div id="lForm">
+      <div class="mttl">Welcome back</div>
+      <div class="msub">Login to access your Aaykar tools</div>
+      <div class="fg"><label>Email</label><input type="email" id="lE" placeholder="you@email.com"/></div>
+      <div class="fg"><label>Password</label><input type="password" id="lP" placeholder="Your password"/></div>
+      <div class="aerr" id="lErr">Incorrect email or password.</div>
+      <button class="btn-auth" onclick="doLogin()">Login to Dashboard</button>
+      <p style="font-size:.82rem;color:var(--muted);margin-top:.8rem;text-align:center">No account? <a href="#" onclick="switchTab('s');return false" style="color:var(--blue);text-decoration:none">Sign up free</a></p>
+    </div>
+    <div id="sForm" style="display:none">
+      <div class="mttl">Create free account</div>
+      <div class="msub">Access all Aaykar tools instantly</div>
+      <div class="fg"><label>Full Name</label><input type="text" id="sN" placeholder="Your full name"/></div>
+      <div class="fg"><label>Email</label><input type="email" id="sE" placeholder="you@email.com"/></div>
+      <div class="fg"><label>Password</label><input type="password" id="sP" placeholder="Min 6 characters"/></div>
+      <div class="aerr" id="sErr">Please fill all fields correctly.</div>
+      <button class="btn-auth" onclick="doSignup()">Create Account & Get Access</button>
+      <p style="font-size:.82rem;color:var(--muted);margin-top:.8rem;text-align:center">Already have account? <a href="#" onclick="switchTab('l');return false" style="color:var(--blue);text-decoration:none">Login</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- WELCOME POPUP -->
+<div class="wp" id="welPop">
+  <div class="wbox">
+    <div style="font-size:2.5rem">🎉</div>
+    <h2>Welcome to Aaykar!</h2>
+    <p>Your account is ready. You now have free access to our professional financial tools.</p>
+    <div class="tpills">
+      <span class="tpill">🧮 Income Tax Calculator</span>
+      <span class="tpill">💼 Salary Slip Generator</span>
+      <span class="tpill">🧾 Invoice Generator</span>
+    </div>
+    <button class="btn-go" onclick="closeWel()">Go to My Dashboard →</button>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" onclick="goMain();return false;" style="display:flex;align-items:center;text-decoration:none;">
+      <svg height="40" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg" style="width:auto;">
+        <g transform="translate(30,20)">
+          <path d="M0 10 Q0 0 10 0 L70 0 Q80 0 80 10 L80 80 Q80 120 40 140 Q0 120 0 80 Z" fill="#1a56db"/>
+          <path d="M8 16 Q8 8 16 8 L64 8 Q72 8 72 16 L72 78 Q72 112 40 128 Q8 112 8 78 Z" fill="#185fa5" opacity="0.5"/>
+          <rect x="18" y="42" width="44" height="6" rx="3" fill="white" opacity="0.95"/>
+          <rect x="18" y="56" width="44" height="6" rx="3" fill="white" opacity="0.75"/>
+          <rect x="18" y="70" width="32" height="6" rx="3" fill="white" opacity="0.55"/>
+          <rect x="18" y="28" width="44" height="5" rx="2.5" fill="#c9a84c"/>
+        </g>
+        <text x="145" y="100" font-family="Georgia,'Times New Roman',serif" font-size="72" font-weight="700" letter-spacing="-1" fill="#0a1628">Aay<tspan fill="#1a56db">kar</tspan></text>
+        <rect x="147" y="108" width="340" height="3" rx="1.5" fill="#c9a84c"/>
+      </svg>
+    </a>
+    <ul class="nl">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#why">Why Us</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#testimonials">Clients</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="nr" id="ngst">
+      <button class="btn-ln" onclick="openAuth('l')">Login</button>
+      <button class="btn-su" onclick="openAuth('s')">Sign Up Free</button>
+    </div>
+    <div class="nr" id="nusr" style="display:none">
+      <div style="display:flex;align-items:center;gap:8px;font-size:.88rem;color:var(--navy);font-weight:500">
+        <div class="uavt" id="uAv">U</div><span id="uNm">User</span>
+      </div>
+      <button class="btn-lo" onclick="doLogout()">Logout</button>
+    </div>
+    <button class="hbg" onclick="toggleNav()"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════════
+     DASHBOARD
+════════════════════════════════════════════════════════════ -->
+<div class="dash" id="dashboard">
+  <div class="dh">
+    <h2 id="dTitle">My Dashboard</h2>
+    <p id="dSub">Choose a tool below to get started.</p>
+  </div>
+  <div class="ttabs">
+    <button class="ttb on" onclick="swTool('tax')">🧮 Income Tax Calculator</button>
+    <button class="ttb" onclick="swTool('salary')">💼 Salary Slip Generator</button>
+    <button class="ttb" onclick="swTool('invoice')">🧾 Invoice Generator</button>
+  </div>
+
+  <!-- ═══ TOOL 1: INCOME TAX ═══════════════════════════════ -->
+  <div class="tpanel on" id="taxPanel">
+    <div class="tc">
+      <h3>Income Tax Calculator — FY 2024-25 (AY 2025-26) — All Heads of Income</h3>
+      <div class="info-box">ℹ️ Fill in all applicable heads of income. Deductions below apply to <strong>Old Regime only</strong>. New Regime is calculated automatically without deductions.</div>
+
+      <div style="display:grid;gap:.8rem" class="g2">
+        <div class="sec-head" style="grid-column:1/-1">👤 Personal Details</div>
+        <div class="ig"><label>Full Name</label><input type="text" id="tName" placeholder="Taxpayer Name"/></div>
+        <div class="ig"><label>PAN Number</label><input type="text" id="tPAN" placeholder="ABCDE1234F"/></div>
+        <div class="ig"><label>Assessment Year</label>
+          <select id="tAY">
+            <option value="2025-26" selected>AY 2025-26 (FY 2024-25)</option>
+            <option value="2024-25">AY 2024-25 (FY 2023-24)</option>
+          </select>
+        </div>
+        <div class="ig"><label>Age Group</label>
+          <select id="tAge">
+            <option value="u60">Below 60 years</option>
+            <option value="s60">60–80 years (Senior Citizen)</option>
+            <option value="ss80">Above 80 years (Super Senior Citizen)</option>
+          </select>
+        </div>
+
+        <div class="sec-head">💼 Head 1: Income from Salary</div>
+        <div class="ig"><label>Basic Salary (Annual ₹)</label><input type="number" id="tBasic" placeholder="0" oninput="liveTax()"/></div>
+        <div class="ig"><label>HRA Received (Annual ₹)</label><input type="number" id="tHRAR" placeholder="0" oninput="liveTax()"/></div>
+        <div class="ig"><label>HRA Exempt (Annual ₹)</label><input type="number" id="tHRAE" placeholder="0" oninput="liveTax()"/></div>
+        <div class="ig"><label>Special Allowance (Annual ₹)</label><input type="number" id="tSA" placeholder="0" oninput="liveTax()"/></div>
+        <div class="ig"><label>Other Allowances (Annual ₹)</label><input type="number" id="tOA" placeholder="0" oninput="liveTax()"/></div>
+        <div class="ig"><label>Perquisites / Bonus (Annual ₹)</label><input type="number" id="tBonus" placeholder="0" oninput="liveTax()"/></div>
+        <div class="ig"><label>Professional Tax Paid (₹)</label><input type="number" id="tPT" placeholder="2400" oninput="liveTax()"/></div>
+
+        <div class="sec-head">🏠 Head 2: Income from House Property</div>
+        <div class="ig"><label>Annual Rental Income (₹)</label><input type="number" id="tRent" placeholder="0" oninput="liveTax()"/></div>
+        <div class="ig"><label>Municipal Taxes Paid (₹)</label><input type="number" id="tMT" placeholder="0" oninput="liveTax()"/></div>
+        <div class="ig"><label>Home Loan Interest (Self-occ., max ₹2L)</label><input type="number" id="tHLI" placeholder="0" oninput="liveTax()"/></div>
+        <div class="ig"><label>Home Loan Interest (Let-out, Actual ₹)</label><input type="number" id="tHLIL" placeholder="0" oninput="liveTax()"/></div>
+
+        <div class="sec-head">📈 Head 3: Capital Gains</div>
+        <div class="ig"><label>Short-Term Capital Gains @ 15% (₹)</label><input type="number" id="tSTCG" placeholder="0" oninput="liveTax()"/></div>
+        <div class="ig"><label>Long-Term Capital Gains @ 10% (₹)</label><input type="number" id="tLTCG" placeholder="0" oninput="liveTax()"/></div>
+        <div class="ig"><label>Other LTCG @ 20% (₹)</label><input type="number" id="tLTCG2" placeholder="0" oninput="liveTax()"/></div>
+
+        <div class="sec-head">💼 Head 4: Business / Profession Income</div>
+        <div class="ig"><label>Net Profit from Business/Profession (₹)</label><input type="number" id="tBiz" placeholder="0" oninput="liveTax()"/></div>
+        <div class="ig"><label>Presumptive Income (Sec 44AD/44ADA ₹)</label><input type="number" id="tPres" placeholder="0" oninput="liveTax()"/></div>
+
+        <div class="sec-head">📦 Head 5: Other Sources</div>
+        <div class="ig"><label>Interest from Savings A/c (₹)</label><input type="number" id="tSavI" placeholder="0" oninput="liveTax()"/></div>
+        <div class="ig"><label>Interest from FD / RD (₹)</label><input type="number" id="tFDI" placeholder="0" oninput="liveTax()"/></div>
+        <div class="ig"><label>Dividends (₹)</label><input type="number" id="tDiv" placeholder="0" oninput="liveTax()"/></div>
+        <div class="ig"><label>Gifts / Other Income (₹)</label><input type="number" id="tGift" placeholder="0" oninput="liveTax()"/></div>
+        <div class="ig"><label>Lottery / Winnings @ 30% (₹)</label><input type="number" id="tLot" placeholder="0" oninput="liveTax()"/></div>
+
+        <div class="sec-head">➖ Deductions (Chapter VI-A — Old Regime Only)</div>
+        <div class="ig"><label>80C — LIC, PPF, ELSS, EPF etc (max ₹1.5L)</label><input type="number" id="t80C" placeholder="0" oninput="liveTax()"/></div>
+        <div class="ig"><label>80CCD(1B) — NPS Additional (max ₹50K)</label><input type="number" id="t80NPS" placeholder="0" oninput="liveTax()"/></div>
+        <div class="ig"><label>80D — Medical Insurance (max ₹1L)</label><input type="number" id="t80D" placeholder="0" oninput="liveTax()"/></div>
+        <div class="ig"><label>80E — Education Loan Interest (₹)</label><input type="number" id="t80E" placeholder="0" oninput="liveTax()"/></div>
+        <div class="ig"><label>80G — Donations (₹)</label><input type="number" id="t80G" placeholder="0" oninput="liveTax()"/></div>
+        <div class="ig"><label>80TTA — Savings Interest Exempt (max ₹10K)</label><input type="number" id="t80TTA" placeholder="0" oninput="liveTax()"/></div>
+        <div class="ig"><label>Other Deductions 80U/80DD/80DDB (₹)</label><input type="number" id="t80Oth" placeholder="0" oninput="liveTax()"/></div>
+      </div>
+
+      <div id="taxOut" style="display:none;margin-top:1.5rem">
+        <div class="rcmp">
+          <div class="rc old">
+            <div class="rctit">Old Regime</div>
+            <div class="rcamt" id="oAmt">₹0</div>
+            <div style="font-size:.72rem;color:#a07820;margin-top:3px">With all deductions</div>
+            <span class="bst" id="oBst" style="display:none">✓ Better for you</span>
+          </div>
+          <div class="rc new">
+            <div class="rctit">New Regime</div>
+            <div class="rcamt" id="nAmt">₹0</div>
+            <div style="font-size:.72rem;color:var(--muted);margin-top:3px">Default — no deductions</div>
+            <span class="bst" id="nBst" style="display:none">✓ Better for you</span>
+          </div>
+        </div>
+        <div class="rbox" id="taxBreak">
+          <h4>Detailed Income Tax Computation Sheet</h4>
+          <div id="taxRows"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TOOL 2: SALARY SLIP ══════════════════════════════ -->
+  <div class="tpanel" id="salaryPanel">
+    <div class="tc">
+      <h3>Salary Slip Generator</h3>
+
+      <div class="g2">
+        <div>
+          <div class="ig">
+            <label>Company Logo (optional)</label>
+            <div class="logo-up" onclick="document.getElementById('slipLogoInp').click()">
+              <input type="file" id="slipLogoInp" accept="image/*" onchange="loadLogo('slip',this)"/>
+              <div class="logo-up-label" id="slipLogoLbl">📷 Click to upload logo (PNG/JPG)</div>
+              <img id="slipLogoPreview" class="logo-preview" style="display:none"/>
+            </div>
+          </div>
+          <div class="ig"><label>Organisation Name</label><input type="text" id="oNm" placeholder="ABC Private Limited"/></div>
+          <div class="ig"><label>Organisation Address</label><input type="text" id="oAd" placeholder="Kolkata, West Bengal — 700001"/></div>
+          <div class="ig"><label>GSTIN / CIN (Optional)</label><input type="text" id="oGST" placeholder="19XXXXX1234Z1ZX"/></div>
+        </div>
+        <div>
+          <div class="ig"><label>Employee Name</label><input type="text" id="eNm" placeholder="Employee Full Name"/></div>
+          <div class="ig"><label>Employee ID</label><input type="text" id="eId" placeholder="EMP001"/></div>
+          <div class="ig"><label>Designation</label><input type="text" id="eDes" placeholder="Senior Accountant"/></div>
+          <div class="ig"><label>Department</label><input type="text" id="eDep" placeholder="Finance & Accounts"/></div>
+          <div class="ig"><label>PAN Number</label><input type="text" id="ePAN" placeholder="ABCDE1234F"/></div>
+          <div class="ig"><label>Bank Account (Last 4 digits)</label><input type="text" id="eBank" placeholder="XXXX"/></div>
+        </div>
+      </div>
+      <div class="g3">
+        <div class="ig"><label>Salary Month</label><input type="month" id="sMon"/></div>
+        <div class="ig"><label>Total Working Days</label><input type="number" id="sTDays" placeholder="26"/></div>
+        <div class="ig"><label>Days Present</label><input type="number" id="sPDays" placeholder="26"/></div>
+      </div>
+      <div class="ig"><label>Salary Input Mode</label>
+        <div class="rtog">
+          <button class="rb on" id="bCTC" onclick="setSM('ctc')">Annual CTC</button>
+          <button class="rb" id="bGross" onclick="setSM('gross')">Annual Gross</button>
+          <button class="rb" id="bNet" onclick="setSM('net')">Monthly Net</button>
+        </div>
+      </div>
+      <div class="g3">
+        <div class="ig"><label id="sLbl">Annual CTC (₹)</label><input type="number" id="sVal" placeholder="600000"/></div>
+        <div class="ig"><label>Provident Fund</label>
+          <select id="sPF">
+            <option value="12">12% of Basic (Standard)</option>
+            <option value="0">No PF</option>
+          </select>
+        </div>
+        <div class="ig"><label>ESI Applicable</label>
+          <select id="sESI">
+            <option value="no">Not Applicable</option>
+            <option value="yes">Yes (0.75% Employee)</option>
+          </select>
+        </div>
+      </div>
+      <div class="g2">
+        <div class="ig"><label>Additional Allowance Name (Optional)</label><input type="text" id="sAddNm" placeholder="e.g. Shift Allowance"/></div>
+        <div class="ig"><label>Additional Allowance Amount (₹)</label><input type="number" id="sAddAmt" placeholder="0"/></div>
+      </div>
+      <button class="cb" onclick="genSlip()">Generate Salary Slip</button>
+    </div>
+
+    <div id="slipOut" style="display:none">
+      <div class="tc">
+        <h3>Salary Slip Preview</h3>
+        <div class="print-area" id="slipArea"></div>
+        <button class="prt-btn" onclick="printSlip()">🖨️ Print / Save as PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TOOL 3: INVOICE ══════════════════════════════════ -->
+  <div class="tpanel" id="invoicePanel">
+    <div class="tc">
+      <h3>Invoice Generator</h3>
+      <div class="g2">
+        <div>
+          <div class="ig">
+            <label>Company Logo (optional)</label>
+            <div class="logo-up" onclick="document.getElementById('invLogoInp').click()">
+              <input type="file" id="invLogoInp" accept="image/*" onchange="loadLogo('inv',this)"/>
+              <div class="logo-up-label" id="invLogoLbl">📷 Click to upload logo</div>
+              <img id="invLogoPreview" class="logo-preview" style="display:none"/>
+            </div>
+          </div>
+          <div class="ig"><label>Your Business Name</label><input type="text" id="iFrom" placeholder="Aaykar Consultancy"/></div>
+          <div class="ig"><label>Address / GSTIN</label><textarea id="iFromA" rows="3" placeholder="123 Business Park, Kolkata&#10;GSTIN: 19XXXXX1234Z1ZX"></textarea></div>
+        </div>
+        <div>
+          <div class="ig"><label>Invoice Number</label><input type="text" id="iNo" placeholder="INV-2024-001"/></div>
+          <div class="ig"><label>Invoice Date</label><input type="date" id="iDate"/></div>
+          <div class="ig"><label>Due Date</label><input type="date" id="iDue"/></div>
+          <div class="ig"><label>Place of Supply</label><input type="text" id="iSupply" placeholder="West Bengal"/></div>
+        </div>
+      </div>
+      <div class="g2">
+        <div class="ig"><label>Bill To — Client Name</label><input type="text" id="iTo" placeholder="Client / Company Name"/></div>
+        <div class="ig"><label>Client Address / GSTIN</label><textarea id="iToA" rows="2" placeholder="Client address&#10;GSTIN (if applicable)"></textarea></div>
+      </div>
+
+      <div style="margin:1rem 0">
+        <label style="font-size:.78rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:.6rem">Line Items</label>
+        <div style="display:grid;grid-template-columns:3fr 1fr 1.5fr 1.5fr auto;gap:8px;margin-bottom:5px">
+          <span style="font-size:.72rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px">Description</span>
+          <span style="font-size:.72rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px">Qty</span>
+          <span style="font-size:.72rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px">Unit</span>
+          <span style="font-size:.72rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px">Rate (₹)</span>
+          <span></span>
+        </div>
+        <div id="iItems"></div>
+        <button style="background:var(--sky);color:var(--blue);border:1px dashed var(--blue);padding:7px 16px;border-radius:6px;font-size:.83rem;cursor:pointer;font-family:inherit;margin-top:.4rem" onclick="addIRow()">+ Add Line Item</button>
+      </div>
+
+      <div class="g2">
+        <div class="ig"><label>GST Rate</label>
+          <select id="iGST">
+            <option value="0">0% — Exempt / Non-GST</option>
+            <option value="5">5% GST</option>
+            <option value="12">12% GST</option>
+            <option value="18" selected>18% GST</option>
+            <option value="28">28% GST</option>
+          </select>
+        </div>
+        <div class="ig"><label>Currency</label>
+          <select id="iCur">
+            <option value="₹">INR (₹)</option>
+            <option value="$">USD ($)</option>
+            <option value="€">EUR (€)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="ig"><label>Payment Terms / Notes</label><input type="text" id="iNotes" placeholder="Payment due within 30 days. Thank you for your business!"/></div>
+
+      <div style="background:var(--sky);border-radius:10px;padding:1rem 1.2rem;margin:.8rem 0">
+        <div style="font-size:.78rem;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:1px;margin-bottom:.7rem">🏦 Bank Details for Payment</div>
+        <div class="g2">
+          <div class="ig" style="margin-bottom:.5rem"><label>Account Holder Name</label><input type="text" id="bName" placeholder="Aaykar Consultancy"/></div>
+          <div class="ig" style="margin-bottom:.5rem"><label>Bank Name</label><input type="text" id="bBank" placeholder="State Bank of India"/></div>
+          <div class="ig" style="margin-bottom:.5rem"><label>Account Number</label><input type="text" id="bAcc" placeholder="XXXX XXXX XXXX"/></div>
+          <div class="ig" style="margin-bottom:.5rem"><label>IFSC Code</label><input type="text" id="bIFSC" placeholder="SBIN0000123"/></div>
+          <div class="ig" style="margin-bottom:.5rem"><label>Branch</label><input type="text" id="bBranch" placeholder="Park Street, Kolkata"/></div>
+          <div class="ig" style="margin-bottom:.5rem"><label>UPI ID (Optional)</label><input type="text" id="bUPI" placeholder="aaykar@upi"/></div>
+        </div>
+      </div>
+
+      <button class="cb" onclick="genInv()">Generate Invoice</button>
+    </div>
+
+    <div id="invOut" style="display:none">
+      <div class="tc">
+        <h3>Invoice Preview</h3>
+        <div class="print-area" id="invArea"></div>
+        <button class="prt-btn" onclick="printInv()">🖨️ Print / Save as PDF</button>
+      </div>
+    </div>
+  </div>
+</div><!-- end dashboard -->
+
+<!-- ══════════════════════════════════════════════════════════
+     MAIN SITE
+════════════════════════════════════════════════════════════ -->
+<div id="mainSite">
+<section class="hero">
+  <div class="hgrid"></div>
+  <div class="hi">
+    <div class="hbadge">Trusted Accounting Partner • Kolkata, India</div>
+    <h1>Financial Clarity for <em>Growing Businesses</em></h1>
+    <p class="hsub">Expert bookkeeping, GST filing, financial reporting & business advisory — so you can focus on building your business while we handle the numbers.</p>
+    <div class="hbtns">
+      <a href="#contact" class="btp">Get a Free Consultation</a>
+      <a href="#services" class="bto">Explore Services</a>
+    </div>
+    <div class="hstats">
+      <div><div class="snum">500+</div><div class="slbl">Clients Served</div></div>
+      <div><div class="snum">10+</div><div class="slbl">Years Experience</div></div>
+      <div><div class="snum">100%</div><div class="slbl">Compliance Rate</div></div>
+      <div><div class="snum">₹0</div><div class="slbl">Penalty Record</div></div>
+    </div>
+  </div>
+</section>
+<div class="tbar">
+  <div class="tbar-in">
+    <div class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>GST Registered Consultants</div>
+    <div class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>100% Data Confidential</div>
+    <div class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>Tally & Zoho Certified</div>
+    <div class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>Fast Turnaround</div>
+  </div>
+</div>
+<section id="services" class="sbg">
+  <div class="si">
+    <div class="fu">
+      <div class="sl">What We Offer</div>
+      <div class="st">Services & Online Tools<br>for Your Business</div>
+      <p class="ss">Expert advisory combined with powerful self-serve financial tools — all in one place.</p>
+    </div>
+    <div class="sgrid">
+      <div class="scard fu" onclick="reqLogin('tax')"><div class="sico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"/></svg></div><div class="stitle">Income Tax Calculator</div><div class="sdesc">Full computation across all 5 heads of income. Compare Old vs New regime with every deduction.</div><span class="stag">🔓 Login Required</span></div>
+      <div class="scard fu" onclick="reqLogin('salary')"><div class="sico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg></div><div class="stitle">Salary Slip Generator</div><div class="sdesc">Professional salary slips with your company logo. CTC, Gross or Net input — print-ready PDF.</div><span class="stag">🔓 Login Required</span></div>
+      <div class="scard fu" onclick="reqLogin('invoice')"><div class="sico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg></div><div class="stitle">Invoice Generator</div><div class="sdesc">GST invoices with your logo, CGST/SGST, bank details — download as professional PDF.</div><span class="stag">🔓 Login Required</span></div>
+      <div class="scard fu"><div class="sico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg></div><div class="stitle">Bookkeeping</div><div class="sdesc">Accurate daily recording of all financial transactions. Audit-ready books always.</div></div>
+      <div class="scard fu"><div class="sico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg></div><div class="stitle">GST Filing & Tax</div><div class="sdesc">GSTR-1, GSTR-3B, ITR — complete GST compliance with zero penalty guarantee.</div></div>
+      <div class="scard fu"><div class="sico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div><div class="stitle">Business Advisory</div><div class="sdesc">Strategic financial planning, cost control & profitability improvement.</div></div>
+    </div>
+  </div>
+</section>
+<section id="why">
+  <div class="si">
+    <div class="wg">
+      <div class="fu">
+        <div class="sl">Why Aaykar</div>
+        <div class="st">More Than Just<br>Accountants</div>
+        <p class="ss" style="margin-bottom:2rem">We act as your financial co-pilot — proactive, reliable, always in your corner.</p>
+        <div class="wl">
+          <div class="wi"><div class="wn">01</div><div class="wt"><h4>Dedicated Account Manager</h4><p>One point of contact who knows your business — no call centers, no handoffs.</p></div></div>
+          <div class="wi"><div class="wn">02</div><div class="wt"><h4>Deadline-Driven</h4><p>Every filing deadline tracked — you never miss one or pay a penalty.</p></div></div>
+          <div class="wi"><div class="wn">03</div><div class="wt"><h4>Cloud-Ready</h4><p>Tally, Zoho Books, QuickBooks — access your financials anywhere.</p></div></div>
+          <div class="wi"><div class="wn">04</div><div class="wt"><h4>Transparent Pricing</h4><p>Fixed monthly packages, no hidden charges. Always know what you pay.</p></div></div>
+        </div>
+      </div>
+      <div class="wvis fu">
+        <div class="kg">
+          <div class="kc"><div class="kv">500+</div><div class="kl">Businesses Served</div></div>
+          <div class="kc"><div class="kv">10+</div><div class="kl">Years Experience</div></div>
+          <div class="kc"><div class="kv">₹0</div><div class="kl">Client Penalties</div></div>
+          <div class="kc"><div class="kv">4.9★</div><div class="kl">Client Rating</div></div>
+        </div>
+        <div style="margin-top:1.5rem;padding:1.2rem;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.25);border-radius:10px;position:relative;z-index:1">
+          <p style="font-size:.87rem;color:rgba(255,255,255,.75);line-height:1.65">"Aaykar transformed how we manage our finances. From chaos to clarity in just 3 months."</p>
+          <p style="font-size:.77rem;color:var(--gold);margin-top:.5rem;font-weight:500">— Rajesh Sharma, Director, RS Enterprises</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="process" class="pbg">
+  <div class="si">
+    <div class="fu" style="text-align:center;max-width:540px;margin:0 auto">
+      <div class="sl">How It Works</div>
+      <div class="st">Simple 4-Step Onboarding</div>
+    </div>
+    <div class="psteps">
+      <div class="pstep fu"><div class="psn">1</div><div class="pst">Free Consultation</div><div class="psd">We understand your business in a free 30-min call.</div></div>
+      <div class="pstep fu"><div class="psn">2</div><div class="pst">Custom Proposal</div><div class="psd">Tailored plan and transparent pricing in 24 hours.</div></div>
+      <div class="pstep fu"><div class="psn">3</div><div class="pst">Onboarding</div><div class="psd">We set up books, migrate data, organise everything.</div></div>
+      <div class="pstep fu"><div class="psn">4</div><div class="pst">Ongoing Support</div><div class="psd">Monthly reports, reminders, dedicated manager.</div></div>
+    </div>
+  </div>
+</section>
+<section id="testimonials">
+  <div class="si">
+    <div class="fu"><div class="sl">Client Stories</div><div class="st">Trusted Across India</div></div>
+    <div class="tgrid">
+      <div class="tcard fu"><div class="tstars">★★★★★</div><div class="ttxt">"GST filings have been flawless since we moved to Aaykar. They explain everything in plain language."</div><div class="tau"><div class="tav">PS</div><div><div class="tnm">Priya Singh</div><div class="trl">Owner, PS Boutique</div></div></div></div>
+      <div class="tcard fu"><div class="tstars">★★★★★</div><div class="ttxt">"Their reports helped us secure a bank loan we'd struggled to get for 2 years. Clear, convincing numbers."</div><div class="tau"><div class="tav">AK</div><div><div class="tnm">Anil Kumar</div><div class="trl">MD, AK Traders</div></div></div></div>
+      <div class="tcard fu"><div class="tstars">★★★★★</div><div class="ttxt">"Switched from a big CA firm. More personal, more responsive, much better value for money."</div><div class="tau"><div class="tav">SM</div><div><div class="tnm">Sunita Mehta</div><div class="trl">Founder, SM Healthcare</div></div></div></div>
+    </div>
+  </div>
+</section>
+<section id="contact" class="ctas">
+  <div class="fu">
+    <div class="sl" style="color:#93b8ff">Get In Touch</div>
+    <h2>Ready to Simplify Your Finances?</h2>
+    <p>Book a free 30-minute consultation. No commitments, no jargon — just clear advice.</p>
+    <a href="mailto:hello@aaykar.in" class="btp" style="display:inline-block">Book Free Consultation</a>
+    <div class="ctac">
+      <div class="ctai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>hello@aaykar.in</div>
+      <div class="ctai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>+91 98765 43210</div>
+      <div class="ctai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>Kolkata, West Bengal</div>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="fi">
+    <div class="ft">
+      <div class="fb">
+        <svg height="46" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg" style="width:auto;">
+          <g transform="translate(30,20)"><path d="M0 10 Q0 0 10 0 L70 0 Q80 0 80 10 L80 80 Q80 120 40 140 Q0 120 0 80 Z" fill="#1a56db"/><path d="M8 16 Q8 8 16 8 L64 8 Q72 8 72 16 L72 78 Q72 112 40 128 Q8 112 8 78 Z" fill="#185fa5" opacity="0.5"/><rect x="18" y="42" width="44" height="6" rx="3" fill="white" opacity="0.95"/><rect x="18" y="56" width="44" height="6" rx="3" fill="white" opacity="0.75"/><rect x="18" y="70" width="32" height="6" rx="3" fill="white" opacity="0.55"/><rect x="18" y="28" width="44" height="5" rx="2.5" fill="#c9a84c"/></g>
+          <text x="145" y="100" font-family="Georgia,'Times New Roman',serif" font-size="72" font-weight="700" letter-spacing="-1" fill="#ffffff">Aay<tspan fill="#1a56db">kar</tspan></text>
+          <rect x="147" y="108" width="340" height="3" rx="1.5" fill="#c9a84c"/>
+        </svg>
+        <div class="fTag">Your trusted accounting and bookkeeping partner. Clarity, compliance, confidence — delivered.</div>
+      </div>
+      <div class="fc"><h5>Free Tools</h5><ul><li><a href="#" onclick="reqLogin('tax');return false">Tax Calculator</a></li><li><a href="#" onclick="reqLogin('salary');return false">Salary Slip</a></li><li><a href="#" onclick="reqLogin('invoice');return false">Invoice Generator</a></li></ul></div>
+      <div class="fc"><h5>Company</h5><ul><li><a href="#why">About Us</a></li><li><a href="#process">How It Works</a></li><li><a href="#testimonials">Clients</a></li><li><a href="#contact">Contact</a></li></ul></div>
+      <div class="fc"><h5>Contact</h5><ul><li><a href="mailto:hello@aaykar.in">hello@aaykar.in</a></li><li>+91 98765 43210</li><li>Kolkata, West Bengal</li><li>aaykar.in</li></ul></div>
+    </div>
+    <div class="fbot">
+      <div class="fcp">© 2026 Aaykar Accounting & Bookkeeping Consultancy. All rights reserved.</div>
+      <div class="fdn">aaykar.in</div>
+    </div>
+  </div>
+</footer>
+</div><!-- end mainSite -->
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// AUTH
+// ═══════════════════════════════════════════════════════════
+var CU=JSON.parse(localStorage.getItem('ak_u')||'null');
+var pendT=null;
+
+function openAuth(t){document.getElementById('authMod').classList.add('open');switchTab(t);}
+function closeAuth(){document.getElementById('authMod').classList.remove('open');}
+function switchTab(t){
+  document.getElementById('lForm').style.display=t==='l'?'block':'none';
+  document.getElementById('sForm').style.display=t==='s'?'block':'none';
+  document.getElementById('tLogin').classList.toggle('on',t==='l');
+  document.getElementById('tSignup').classList.toggle('on',t==='s');
+}
+function doSignup(){
+  var n=v('sN'),e=v('sE'),p=v('sP');
+  var err=ge('sErr');
+  if(!n||!e||!e.includes('@')||p.length<6){err.textContent='Fill all fields. Password min 6 chars.';err.style.display='block';return;}
+  var us=JSON.parse(localStorage.getItem('ak_us')||'[]');
+  if(us.find(function(u){return u.e===e;})){err.textContent='Email already registered — please login.';err.style.display='block';return;}
+  err.style.display='none';
+  us.push({n:n,e:e,p:p});
+  localStorage.setItem('ak_us',JSON.stringify(us));
+  CU={n:n,e:e};localStorage.setItem('ak_u',JSON.stringify(CU));
+  closeAuth();
+  if(!localStorage.getItem('ak_w_'+e)){localStorage.setItem('ak_w_'+e,'1');ge('welPop').classList.add('open');}
+  else{updNav();goDash(pendT||'tax');pendT=null;}
+}
+function doLogin(){
+  var e=v('lE'),p=v('lP');
+  var err=ge('lErr');
+  var us=JSON.parse(localStorage.getItem('ak_us')||'[]');
+  var u=us.find(function(x){return x.e===e&&x.p===p;});
+  if(!u){err.style.display='block';return;}
+  err.style.display='none';
+  CU={n:u.n,e:u.e};localStorage.setItem('ak_u',JSON.stringify(CU));
+  closeAuth();updNav();goDash(pendT||'tax');pendT=null;
+}
+function doLogout(){CU=null;localStorage.removeItem('ak_u');updNav();goMain();}
+function updNav(){
+  if(CU){
+    ge('ngst').style.display='none';ge('nusr').style.display='flex';
+    ge('uNm').textContent=CU.n.split(' ')[0];
+    ge('uAv').textContent=CU.n[0].toUpperCase();
+    ge('dTitle').textContent='My Dashboard';
+    ge('dSub').textContent='Welcome back, '+CU.n.split(' ')[0]+'! Choose a tool below.';
+  } else {
+    ge('ngst').style.display='flex';ge('nusr').style.display='none';
+  }
+}
+function closeWel(){ge('welPop').classList.remove('open');updNav();goDash(pendT||'tax');pendT=null;}
+function reqLogin(t){if(CU){goDash(t);}else{pendT=t;openAuth('s');}}
+function goDash(t){ge('mainSite').style.display='none';ge('dashboard').classList.add('open');window.scrollTo(0,0);if(t)swTool(t);}
+function goMain(){ge('mainSite').style.display='block';ge('dashboard').classList.remove('open');}
+function swTool(t){
+  var tools=['tax','salary','invoice'];
+  document.querySelectorAll('.ttb').forEach(function(b,i){b.classList.toggle('on',tools[i]===t);});
+  document.querySelectorAll('.tpanel').forEach(function(p){p.classList.remove('on');});
+  ge(t==='tax'?'taxPanel':t==='salary'?'salaryPanel':'invoicePanel').classList.add('on');
+}
+ge('authMod').addEventListener('click',function(e){if(e.target===this)closeAuth();});
+ge('welPop').addEventListener('click',function(e){if(e.target===this)closeWel();});
+if(CU)updNav();
+
+// ═══════════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════════
+function ge(id){return document.getElementById(id);}
+function v(id){return (ge(id).value||'').trim();}
+function n(id){return parseFloat(ge(id).value)||0;}
+function fmt(x,cur){cur=cur||'₹';return cur+Math.round(x).toLocaleString('en-IN');}
+function fmtD(d){return d?new Date(d).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}):'-';}
+
+// ═══════════════════════════════════════════════════════════
+// LOGO UPLOAD
+// ═══════════════════════════════════════════════════════════
+var logos={slip:null,inv:null};
+function loadLogo(type,inp){
+  var f=inp.files[0];if(!f)return;
+  var r=new FileReader();
+  r.onload=function(e){
+    logos[type]=e.target.result;
+    ge(type+'LogoPreview').src=e.target.result;
+    ge(type+'LogoPreview').style.display='block';
+    ge(type+'LogoLbl').textContent='✓ Logo uploaded — click to change';
+  };
+  r.readAsDataURL(f);
+}
+
+// ═══════════════════════════════════════════════════════════
+// INCOME TAX CALCULATOR — ALL HEADS
+// ═══════════════════════════════════════════════════════════
+function slab(inc,slabs){
+  var t=0;
+  for(var i=0;i<slabs.length;i++){var s=slabs[i];if(inc>s[0])t+=(Math.min(inc,s[1])-s[0])*s[2]/100;}
+  return Math.max(0,t);
+}
+function liveTax(){
+  var age=ge('tAge').value;
+  // ─ Salary Income
+  var basic=n('tBasic'),hraR=n('tHRAR'),hraE=n('tHRAE'),sa=n('tSA'),oa=n('tOA'),bonus=n('tBonus'),pt=n('tPT');
+  var grossSal=basic+hraR+sa+oa+bonus;
+  var stdDed=50000;
+  var salNet=Math.max(0,grossSal-hraE-stdDed-pt);
+  // ─ House Property
+  var rentInc=n('tRent'),mt=n('tMT'),hli=Math.min(n('tHLI'),200000),hliL=n('tHLIL');
+  var nalv=Math.max(0,rentInc-mt);
+  var std30=Math.round(nalv*0.30);
+  var hpLetOut=Math.max(0,nalv-std30-hliL);
+  var hpSelfOcc=Math.max(0,-hli); // loss
+  var hpIncome=rentInc>0?hpLetOut:(hli>0?-hli:0);
+  // ─ Capital Gains (taxed separately)
+  var stcg=n('tSTCG'),ltcg=n('tLTCG'),ltcg2=n('tLTCG2');
+  var stcgTax=Math.round(stcg*0.15);
+  var ltcgTax=Math.round(Math.max(0,ltcg-125000)*0.10);
+  var ltcg2Tax=Math.round(ltcg2*0.20);
+  var cgTax=stcgTax+ltcgTax+ltcg2Tax;
+  // ─ Business
+  var biz=n('tBiz')+n('tPres');
+  // ─ Other Sources
+  var savI=n('tSavI'),fdI=n('tFDI'),div=n('tDiv'),gift=n('tGift');
+  var lottery=n('tLot');
+  var lotTax=Math.round(lottery*0.30);
+  var otherSrc=savI+fdI+div+gift;
+  // ─ Gross Total Income (excluding CG and Lottery)
+  var gti=salNet+Math.max(0,hpIncome)+biz+otherSrc;
+  // ─ OLD REGIME deductions
+  var c80=Math.min(n('t80C'),150000);
+  var nps=Math.min(n('t80NPS'),50000);
+  var d80=Math.min(n('t80D'),100000);
+  var e80=n('t80E');
+  var g80=n('t80G');
+  var tta=Math.min(n('t80TTA'),10000);
+  var oth=n('t80Oth');
+  var totalDed=c80+nps+d80+e80+g80+tta+oth;
+  var oldTI=Math.max(0,gti-totalDed);
+  // ─ OLD REGIME tax
+  var os,orb=0;
+  if(age==='ss80'){os=[[0,500000,0],[500000,1000000,20],[1000000,Infinity,30]];}
+  else if(age==='s60'){os=[[0,300000,0],[300000,500000,5],[500000,1000000,20],[1000000,Infinity,30]];}
+  else{os=[[0,250000,0],[250000,500000,5],[500000,1000000,20],[1000000,Infinity,30]];if(oldTI<=500000)orb=12500;}
+  var oldBase=slab(oldTI,os);
+  var oldTax=Math.max(0,oldBase-orb)+cgTax+lotTax;
+  var oldCess=Math.round(oldTax*0.04);
+  var oldTotal=oldTax+oldCess;
+  // ─ NEW REGIME tax (FY 2024-25 slabs)
+  var nsTax,nrb=0;
+  var ns=[[0,300000,0],[300000,700000,5],[700000,1000000,10],[1000000,1200000,15],[1200000,1500000,20],[1500000,Infinity,30]];
+  nsTax=slab(gti,ns);
+  if(gti<=700000)nrb=Math.min(nsTax,25000);
+  var newBase=Math.max(0,nsTax-nrb)+cgTax+lotTax;
+  var newCess=Math.round(newBase*0.04);
+  var newTotal=newBase+newCess;
+  // ─ Display
+  ge('oAmt').textContent=fmt(oldTotal);
+  ge('nAmt').textContent=fmt(newTotal);
+  ge('oBst').style.display=oldTotal<newTotal?'inline-block':'none';
+  ge('nBst').style.display=newTotal<=oldTotal?'inline-block':'none';
+  var rows='';
+  var row=function(l,v,cls,ind){return '<div class="rr'+(cls?' '+cls:'')+(ind?' ind':'')+'"><span>'+l+'</span><span>'+v+'</span></div>';};
+  var sep=function(t){return '<div style="font-size:.72rem;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:1.5px;padding:10px 0 3px;border-bottom:1px solid rgba(26,86,219,.15);margin:4px 0">'+t+'</div>';};
+  rows+=sep('Head 1 — Income from Salary');
+  rows+=row('Gross Salary',fmt(grossSal));
+  rows+=row('Less: HRA Exemption','-'+fmt(hraE),'','ind');
+  rows+=row('Less: Standard Deduction (₹50,000)','-'+fmt(stdDed),'','ind');
+  rows+=row('Less: Professional Tax Paid','-'+fmt(pt),'','ind');
+  rows+=row('Net Salary Income',fmt(salNet),'bold');
+  rows+=sep('Head 2 — Income from House Property');
+  if(rentInc>0){
+    rows+=row('Gross Annual Value (GAV)',fmt(rentInc));
+    rows+=row('Less: Municipal Taxes','-'+fmt(mt),'','ind');
+    rows+=row('Net Annual Value (NAV)',fmt(nalv));
+    rows+=row('Less: 30% Standard Deduction','-'+fmt(std30),'','ind');
+    rows+=row('Less: Home Loan Interest (Let-out)','-'+fmt(hliL),'','ind');
+    rows+=row('Income from Let-out Property',fmt(hpLetOut),'bold');
+  } else if(hli>0){
+    rows+=row('Self-occupied Property — Interest on Loan',fmt(hli));
+    rows+=row('Income from House Property (Loss)','-'+fmt(hli),'bold');
+  } else {rows+=row('No house property income','—');}
+  rows+=sep('Head 3 — Capital Gains (Taxed Separately)');
+  rows+=row('Short-Term Capital Gains (STCG)',fmt(stcg));
+  rows+=row('STCG Tax @ 15%',fmt(stcgTax),'','ind');
+  rows+=row('Long-Term Capital Gains (LTCG, listed)',fmt(ltcg));
+  rows+=row('LTCG Exempt (₹1,25,000)',fmt(Math.min(ltcg,125000)),'','ind');
+  rows+=row('LTCG Tax @ 10%',fmt(ltcgTax),'','ind');
+  rows+=row('Other LTCG @ 20%',fmt(ltcg2));
+  rows+=row('Other LTCG Tax @ 20%',fmt(ltcg2Tax),'','ind');
+  rows+=sep('Head 4 — Business / Profession');
+  rows+=row('Net Business / Profession Income',fmt(biz),'bold');
+  rows+=sep('Head 5 — Income from Other Sources');
+  rows+=row('Savings A/c Interest',fmt(savI));
+  rows+=row('FD / RD Interest',fmt(fdI));
+  rows+=row('Dividends',fmt(div));
+  rows+=row('Gifts / Miscellaneous',fmt(gift));
+  rows+=row('Lottery / Winnings',fmt(lottery));
+  rows+=row('Tax on Lottery @ 30%',fmt(lotTax),'','ind');
+  rows+=sep('Gross Total Income');
+  rows+=row('GTI (Salary + HP + Business + Others)',fmt(gti),'bold');
+  rows+=sep('Chapter VI-A Deductions — Old Regime Only');
+  if(c80>0)rows+=row('80C (LIC, PPF, ELSS, EPF etc.)','-'+fmt(c80),'','ind');
+  if(nps>0)rows+=row('80CCD(1B) — NPS Additional','-'+fmt(nps),'','ind');
+  if(d80>0)rows+=row('80D — Medical Insurance','-'+fmt(d80),'','ind');
+  if(e80>0)rows+=row('80E — Education Loan Interest','-'+fmt(e80),'','ind');
+  if(g80>0)rows+=row('80G — Donations','-'+fmt(g80),'','ind');
+  if(tta>0)rows+=row('80TTA — Savings Interest Exemption','-'+fmt(tta),'','ind');
+  if(oth>0)rows+=row('Other Deductions 80U/80DD/80DDB','-'+fmt(oth),'','ind');
+  rows+=row('Total Chapter VI-A Deductions',fmt(totalDed),'bold');
+  rows+=sep('Tax Computation');
+  rows+=row('Taxable Income — Old Regime',fmt(oldTI));
+  rows+=row('Income Tax on Slab (Old)',fmt(oldBase));
+  rows+=row('Add: Capital Gains Tax','+'+fmt(cgTax),'','ind');
+  rows+=row('Add: Lottery Tax','+'+fmt(lotTax),'','ind');
+  rows+=row('Less: Rebate u/s 87A','-'+fmt(orb),'','ind');
+  rows+=row('Total Tax before Cess (Old)',fmt(oldTax));
+  rows+=row('Health & Edu Cess @ 4%',fmt(oldCess));
+  rows+=row('TOTAL TAX — OLD REGIME',fmt(oldTotal),'bold');
+  rows+='<div style="height:8px"></div>';
+  rows+=row('Taxable Income — New Regime (No Deductions)',fmt(gti));
+  rows+=row('Tax on Slab (New)',fmt(nsTax));
+  rows+=row('Less: Rebate u/s 87A','-'+fmt(nrb),'','ind');
+  rows+=row('Add: Capital Gains + Lottery Tax','+'+fmt(cgTax+lotTax),'','ind');
+  rows+=row('Health & Edu Cess @ 4%',fmt(newCess));
+  rows+=row('TOTAL TAX — NEW REGIME',fmt(newTotal),'bold');
+  var save=Math.abs(oldTotal-newTotal);
+  var better=oldTotal<newTotal?'Old':'New';
+  rows+='<div class="rr grn"><span>✅ Choose '+better+' Regime — You Save</span><span>'+fmt(save)+'</span></div>';
+  ge('taxRows').innerHTML=rows;
+  ge('taxOut').style.display=gti>0||stcg>0||ltcg>0||lottery>0?'block':'none';
+}
+
+// ═══════════════════════════════════════════════════════════
+// SALARY SLIP
+// ═══════════════════════════════════════════════════════════
+var sMode='ctc';
+function setSM(m){
+  sMode=m;
+  ['ctc','gross','net'].forEach(function(x){ge('b'+x.charAt(0).toUpperCase()+x.slice(1)).classList.toggle('on',x===m);});
+  var lbl={ctc:'Annual CTC (₹)',gross:'Annual Gross Salary (₹)',net:'Monthly Net / Take-Home (₹)'};
+  ge('sLbl').textContent=lbl[m];
+}
+function genSlip(){
+  var org=v('oNm')||'Your Organisation';
+  var addr=v('oAd')||'';
+  var gst=v('oGST');
+  var en=v('eNm')||'Employee Name';
+  var eid=v('eId')||'EMP001';
+  var edes=v('eDes')||'—';
+  var edep=v('eDep')||'—';
+  var epan=v('ePAN');
+  var ebank=v('eBank');
+  var emon=ge('sMon').value;
+  var tdays=ge('sTDays').value||'26';
+  var pdays=ge('sPDays').value||tdays;
+  var addNm=v('sAddNm');
+  var addAmt=n('sAddAmt');
+  var sv=n('sVal');
+  var pfPct=parseFloat(ge('sPF').value)||0;
+  var esiYes=ge('sESI').value==='yes';
+  if(sv<=0){alert('Please enter a salary value.');return;}
+  var mstr=emon?new Date(emon+'-01').toLocaleDateString('en-IN',{month:'long',year:'numeric'}):'Current Month';
+  var ratio=parseFloat(pdays)/parseFloat(tdays)||1;
+  var fullGross=sMode==='ctc'?sv/12*0.87:(sMode==='gross'?sv/12:sv/(1-(pfPct/100*0.4+0.02)));
+  var gross=fullGross*ratio;
+  var basic=Math.round(gross*0.40);
+  var hra=Math.round(gross*0.20);
+  var conv=Math.round(1600*ratio);
+  var med=Math.round(1250*ratio);
+  var extra=addNm&&addAmt>0?Math.round(addAmt*ratio):0;
+  var spec=Math.max(0,Math.round(gross-basic-hra-conv-med-extra));
+  var pf=pfPct>0?Math.round(basic*0.12):0;
+  var esi=esiYes?Math.round(gross*0.0075):0;
+  var pt=ratio>=1?200:0;
+  var tds=Math.round(Math.max(0,(gross*12-300000)*0.05/12));
+  var earn=basic+hra+conv+med+spec+extra;
+  var ded=pf+esi+pt+tds;
+  var net=earn-ded;
+  var logoHtml=logos.slip?'<img src="'+logos.slip+'" style="max-height:55px;max-width:150px;object-fit:contain"/>':'<div style="width:55px;height:55px;background:#e8f0fe;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#1a56db;font-weight:700;text-align:center">LOGO</div>';
+  var h='<div class="slip-wrap">';
+  h+='<div class="slip-header"><div>'+logoHtml+'</div>';
+  h+='<div style="text-align:center;flex:1"><div class="slip-org">'+org+'</div>';
+  if(addr)h+='<div class="slip-addr">'+addr+'</div>';
+  if(gst)h+='<div class="slip-addr">GSTIN: '+gst+'</div>';
+  h+='</div>';
+  h+='<div style="text-align:right"><div class="slip-title">Salary Slip</div><div style="font-size:10px;color:#555;margin-top:4px">'+mstr+'</div></div></div>';
+  h+='<div class="slip-meta">';
+  h+='<span class="mk">Employee Name</span><span class="mv">'+en+'</span>';
+  h+='<span class="mk">Employee ID</span><span class="mv">'+eid+'</span>';
+  h+='<span class="mk">Designation</span><span class="mv">'+edes+'</span>';
+  h+='<span class="mk">Department</span><span class="mv">'+edep+'</span>';
+  if(epan)h+='<span class="mk">PAN</span><span class="mv">'+epan+'</span>';
+  if(ebank)h+='<span class="mk">Bank A/c</span><span class="mv">XXXX XXXX '+ebank+'</span>';
+  h+='<span class="mk">Days Worked</span><span class="mv">'+pdays+' / '+tdays+' days</span>';
+  h+='<span class="mk">Pay Period</span><span class="mv">'+mstr+'</span>';
+  h+='</div>';
+  h+='<table class="slip-tbl"><thead><tr><th colspan="2">💰 Earnings</th><th colspan="2">➖ Deductions</th></tr></thead><tbody>';
+  var eRows=[
+    ['Basic Salary',basic],['House Rent Allowance (HRA)',hra],
+    ['Conveyance Allowance',conv],['Medical Allowance',med],
+    ['Special Allowance',spec]
+  ];
+  if(addNm&&extra>0)eRows.push([addNm,extra]);
+  var dRows=[['Provident Fund (PF 12%)',pf]];
+  if(esiYes)dRows.push(['ESI (0.75%)',esi]);
+  dRows.push(['Professional Tax',pt],['TDS (Estimated)',tds]);
+  var maxR=Math.max(eRows.length,dRows.length);
+  for(var i=0;i<maxR;i++){
+    var er=eRows[i]||['',''];
+    var dr=dRows[i]||['',''];
+    h+='<tr>';
+    h+='<td class="earn">'+er[0]+'</td><td class="earn" style="text-align:right">'+( er[1]!==''?fmt(er[1]):'')+'</td>';
+    h+='<td class="ded">'+dr[0]+'</td><td class="ded" style="text-align:right">'+( dr[1]!==''?fmt(dr[1]):'')+'</td>';
+    h+='</tr>';
+  }
+  h+='<tr class="tot"><td>Total Earnings</td><td style="text-align:right">'+fmt(earn)+'</td><td>Total Deductions</td><td style="text-align:right">'+fmt(ded)+'</td></tr>';
+  h+='</tbody></table>';
+  h+='<div class="slip-net"><div class="nl-label">Net Pay — Take-Home Salary</div><div class="nl-amt">'+fmt(net)+'</div></div>';
+  h+='<div class="slip-note">This is a computer-generated salary slip. No signature required.</div>';
+  h+='<div class="slip-sign"><div class="ss"><div class="ss-line"></div>Employee Signature</div><div class="ss"><div class="ss-line"></div>HR / Payroll</div><div class="ss"><div class="ss-line"></div>Authorised Signatory</div></div>';
+  h+='</div>';
+  ge('slipArea').innerHTML=h;
+  ge('slipOut').style.display='block';
+  ge('slipOut').scrollIntoView({behavior:'smooth'});
+}
+function printSlip(){
+  var content=ge('slipArea').innerHTML;
+  var w=window.open('','_blank','width=900,height=700');
+  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Salary Slip</title>');
+  w.document.write('<style>');
+  w.document.write('body{font-family:Arial,sans-serif;margin:1.5cm;color:#111;background:#fff}');
+  w.document.write('.slip-wrap{max-width:100%}');
+  w.document.write('.slip-header{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #0a1628;padding-bottom:12px;margin-bottom:12px}');
+  w.document.write('.slip-org{font-size:16px;font-weight:700;color:#0a1628}');
+  w.document.write('.slip-addr{font-size:10px;color:#555;margin-top:3px}');
+  w.document.write('.slip-title{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#1a56db;background:#e8f0fe;padding:4px 12px;border-radius:100px}');
+  w.document.write('.slip-meta{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px 12px;margin-bottom:12px;padding:10px;background:#f5f7fb;border-radius:8px}');
+  w.document.write('.slip-meta .mk{color:#666;font-size:10px}.slip-meta .mv{font-weight:600;color:#0a1628;font-size:11px}');
+  w.document.write('.slip-tbl{width:100%;border-collapse:collapse;margin-bottom:10px}');
+  w.document.write('.slip-tbl th{background:#0a1628;color:#fff;padding:7px 10px;text-align:left;font-size:10px;font-weight:600}');
+  w.document.write('.slip-tbl td{padding:6px 10px;border-bottom:1px solid #e5e5e5;font-size:11px}');
+  w.document.write('.slip-tbl .earn{background:#f9fff9}.slip-tbl .ded{background:#fff9f9}');
+  w.document.write('.slip-tbl .tot td{background:#e8f0fe;font-weight:700;border-top:2px solid #1a56db}');
+  w.document.write('.slip-net{background:#0a1628;color:#fff;border-radius:8px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}');
+  w.document.write('.slip-net .nl-label{font-size:11px;opacity:.75}.slip-net .nl-amt{font-size:20px;font-weight:700;color:#c9a84c}');
+  w.document.write('.slip-note{font-size:10px;color:#888;text-align:center;margin-bottom:8px}');
+  w.document.write('.slip-sign{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;border-top:1px solid #ddd;padding-top:10px}');
+  w.document.write('.slip-sign .ss{text-align:center;font-size:10px;color:#666}');
+  w.document.write('.slip-sign .ss-line{border-bottom:1px solid #888;width:80%;margin:18px auto 4px}');
+  w.document.write('@media print{body{margin:1cm}@page{margin:1cm}}');
+  w.document.write('</style></head><body>');
+  w.document.write(content);
+  w.document.write('</body></html>');
+  w.document.close();
+  w.onload=function(){w.print();};
+}
+
+// ═══════════════════════════════════════════════════════════
+// INVOICE
+// ═══════════════════════════════════════════════════════════
+var iRows=[{d:'',q:1,u:'',r:0}];
+function renderIRows(){
+  var h='';
+  iRows.forEach(function(row,i){
+    h+='<div style="display:grid;grid-template-columns:3fr 1fr 1.5fr 1.5fr auto;gap:8px;margin-bottom:8px;align-items:center">';
+    h+='<input type="text" value="'+row.d+'" placeholder="Description of service/item" oninput="iRows['+i+'].d=this.value" style="padding:8px 11px;border:1px solid var(--bdr);border-radius:6px;font-size:.87rem;font-family:inherit;outline:none;width:100%"/>';
+    h+='<input type="number" value="'+row.q+'" min="1" oninput="iRows['+i+'].q=parseFloat(this.value)||1" style="padding:8px 11px;border:1px solid var(--bdr);border-radius:6px;font-size:.87rem;text-align:right;font-family:inherit;outline:none;width:100%"/>';
+    h+='<input type="text" value="'+row.u+'" placeholder="nos/hrs/kg" oninput="iRows['+i+'].u=this.value" style="padding:8px 11px;border:1px solid var(--bdr);border-radius:6px;font-size:.87rem;font-family:inherit;outline:none;width:100%"/>';
+    h+='<input type="number" value="'+row.r+'" placeholder="0" oninput="iRows['+i+'].r=parseFloat(this.value)||0" style="padding:8px 11px;border:1px solid var(--bdr);border-radius:6px;font-size:.87rem;text-align:right;font-family:inherit;outline:none;width:100%"/>';
+    h+='<button onclick="rmIRow('+i+')" style="background:none;border:none;color:#e24b4a;cursor:pointer;font-size:1rem;padding:0 4px" title="Remove">✕</button>';
+    h+='</div>';
+  });
+  ge('iItems').innerHTML=h;
+}
+function addIRow(){iRows.push({d:'',q:1,u:'',r:0});renderIRows();}
+function rmIRow(i){if(iRows.length>1){iRows.splice(i,1);renderIRows();}}
+function genInv(){
+  var from=v('iFrom')||'Aaykar Consultancy';
+  var fromA=v('iFromA')||'Kolkata, West Bengal';
+  var ino=v('iNo')||'INV-001';
+  var idate=ge('iDate').value;
+  var idue=ge('iDue').value;
+  var supply=v('iSupply');
+  var to=v('iTo')||'Client Name';
+  var toA=v('iToA')||'';
+  var gst=parseFloat(ge('iGST').value)||0;
+  var cur=ge('iCur').value||'₹';
+  var notes=v('iNotes')||'Payment due within 30 days. Thank you for your business!';
+  var bName=v('bName'),bBank=v('bBank'),bAcc=v('bAcc'),bIFSC=v('bIFSC'),bBranch=v('bBranch'),bUPI=v('bUPI');
+  var rows=iRows.filter(function(r){return r.d||r.r>0;});
+  if(!rows.length){alert('Add at least one line item.');return;}
+  var sub=rows.reduce(function(s,r){return s+r.q*r.r;},0);
+  var gstAmt=sub*gst/100;
+  var cgst=gstAmt/2,sgst=gstAmt/2,tot=sub+gstAmt;
+  var logoHtml=logos.inv?'<img src="'+logos.inv+'" style="max-height:60px;max-width:160px;object-fit:contain"/>':'';
+  var h='<div class="inv-wrap">';
+  h+='<div class="inv-top">';
+  h+='<div class="inv-from-block">'+logoHtml+'<div class="company" style="margin-top:'+(logoHtml?'8px':'0')+'">'+from+'</div><div class="addr">'+fromA+'</div></div>';
+  h+='<div class="inv-badge"><div class="word">INVOICE</div><div class="meta">No: <strong>'+ino+'</strong><br>Date: <strong>'+fmtD(idate)+'</strong><br>Due: <strong>'+fmtD(idue)+'</strong>'+(supply?'<br>Place of Supply: <strong>'+supply+'</strong>':'')+'</div></div>';
+  h+='</div>';
+  h+='<div class="inv-bill"><div><div class="bt">Bill To</div><div class="bn">'+to+'</div><div class="ba" style="white-space:pre-wrap">'+toA+'</div></div>';
+  h+='<div><div class="bt">Invoice Summary</div><div style="font-size:11px;line-height:1.8"><span style="color:#666">Subtotal: </span><strong>'+fmt(sub,cur)+'</strong><br>';
+  if(gst>0)h+='<span style="color:#666">GST ('+gst+'%): </span><strong>'+fmt(gstAmt,cur)+'</strong><br>';
+  h+='<span style="color:#666">Total: </span><strong style="color:#0a1628;font-size:13px">'+fmt(tot,cur)+'</strong></div></div></div>';
+  h+='<table class="inv-tbl"><thead><tr><th>#</th><th>Description</th><th>Unit</th><th class="nr">Qty</th><th class="nr">Rate ('+cur+')</th><th class="nr">Amount ('+cur+')</th></tr></thead><tbody>';
+  rows.forEach(function(r,i){
+    h+='<tr><td>'+(i+1)+'</td><td>'+r.d+'</td><td>'+( r.u||'—')+'</td><td class="nr">'+r.q+'</td><td class="nr">'+Math.round(r.r).toLocaleString('en-IN')+'</td><td class="nr">'+Math.round(r.q*r.r).toLocaleString('en-IN')+'</td></tr>';
+  });
+  h+='</tbody></table>';
+  h+='<div class="inv-totals"><div class="inv-tot-inner">';
+  h+='<div class="inv-trow"><span style="color:#666">Subtotal</span><span>'+fmt(sub,cur)+'</span></div>';
+  if(gst>0){
+    h+='<div class="inv-trow"><span style="color:#666">CGST @ '+gst/2+'%</span><span>'+fmt(cgst,cur)+'</span></div>';
+    h+='<div class="inv-trow"><span style="color:#666">SGST @ '+gst/2+'%</span><span>'+fmt(sgst,cur)+'</span></div>';
+  }
+  h+='<div class="inv-trow" style="font-weight:700;font-size:13px;border-top:2px solid #0a1628;padding-top:6px;margin-top:4px;border-bottom:none"><span>Total Amount</span><span>'+fmt(tot,cur)+'</span></div>';
+  h+='</div></div>';
+  if(bName||bBank||bAcc||bIFSC){
+    h+='<div class="inv-bank"><div class="bt">Payment / Bank Details</div><div class="inv-bank-grid">';
+    if(bName)h+='<span class="bk">Account Name</span><span class="bv">'+bName+'</span>';
+    if(bBank)h+='<span class="bk">Bank</span><span class="bv">'+bBank+'</span>';
+    if(bAcc)h+='<span class="bk">Account Number</span><span class="bv">'+bAcc+'</span>';
+    if(bIFSC)h+='<span class="bk">IFSC Code</span><span class="bv">'+bIFSC+'</span>';
+    if(bBranch)h+='<span class="bk">Branch</span><span class="bv">'+bBranch+'</span>';
+    if(bUPI)h+='<span class="bk">UPI ID</span><span class="bv">'+bUPI+'</span>';
+    h+='</div></div>';
+  }
+  h+='<div class="inv-footer-bar"><div><div class="inv-sign-line"></div><div>Authorised Signatory</div></div>';
+  h+='<div style="text-align:center;max-width:300px">'+notes+'</div>';
+  h+='<div style="text-align:right;font-size:10px;color:#aaa">Generated by Aaykar.in</div></div>';
+  h+='</div>';
+  ge('invArea').innerHTML=h;
+  ge('invOut').style.display='block';
+  ge('invOut').scrollIntoView({behavior:'smooth'});
+}
+function printInv(){
+  var content=ge('invArea').innerHTML;
+  var w=window.open('','_blank','width=960,height=750');
+  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Invoice</title>');
+  w.document.write('<style>');
+  w.document.write('body{font-family:Arial,sans-serif;margin:1.5cm;color:#111;background:#fff;font-size:12px}');
+  w.document.write('.inv-wrap{max-width:100%}');
+  w.document.write('.inv-top{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid #0a1628;padding-bottom:14px;margin-bottom:14px}');
+  w.document.write('.inv-from-block .company{font-size:15px;font-weight:700;color:#0a1628}');
+  w.document.write('.inv-from-block .addr{font-size:10px;color:#555;margin-top:3px;line-height:1.6;white-space:pre-wrap}');
+  w.document.write('.inv-badge .word{font-size:28px;font-weight:700;color:#0a1628;text-align:right}');
+  w.document.write('.inv-badge .meta{font-size:10px;color:#555;margin-top:4px;line-height:1.7;text-align:right}');
+  w.document.write('.inv-bill{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:14px;padding:10px 14px;background:#f5f7fb;border-radius:8px}');
+  w.document.write('.inv-bill .bt{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#1a56db;margin-bottom:4px}');
+  w.document.write('.inv-bill .bn{font-weight:700;color:#0a1628;font-size:12px}');
+  w.document.write('.inv-bill .ba{font-size:10px;color:#555;margin-top:2px;white-space:pre-wrap}');
+  w.document.write('.inv-tbl{width:100%;border-collapse:collapse;margin-bottom:10px}');
+  w.document.write('.inv-tbl th{background:#0a1628;color:#fff;padding:7px 10px;text-align:left;font-size:10px;font-weight:600}');
+  w.document.write('.inv-tbl td{padding:7px 10px;border-bottom:1px solid #e5e5e5;font-size:11px}');
+  w.document.write('.inv-tbl .nr{text-align:right}');
+  w.document.write('.inv-totals{display:flex;justify-content:flex-end;margin-bottom:12px}');
+  w.document.write('.inv-tot-inner{width:260px}');
+  w.document.write('.inv-trow{display:flex;justify-content:space-between;padding:4px 0;font-size:11px;border-bottom:1px solid #eee}');
+  w.document.write('.inv-bank{background:#f5f7fb;border-radius:8px;padding:10px 14px;margin-bottom:10px;font-size:10px}');
+  w.document.write('.inv-bank .bt{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#1a56db;margin-bottom:5px}');
+  w.document.write('.inv-bank-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 16px}');
+  w.document.write('.inv-bank .bk{color:#666}.inv-bank .bv{font-weight:600;color:#0a1628}');
+  w.document.write('.inv-footer-bar{display:flex;justify-content:space-between;align-items:flex-end;border-top:1px solid #ddd;padding-top:8px;font-size:10px;color:#888}');
+  w.document.write('.inv-sign-line{border-top:1px solid #888;width:160px;margin-bottom:4px}');
+  w.document.write('@media print{body{margin:1cm}@page{margin:1cm}}');
+  w.document.write('</style></head><body>');
+  w.document.write(content);
+  w.document.write('</body></html>');
+  w.document.close();
+  w.onload=function(){w.print();};
+}
+
+// init invoice rows + dates
+renderIRows();
+var td=new Date().toISOString().split('T')[0];
+ge('iDate').value=td;
+var dd=new Date();dd.setDate(dd.getDate()+30);
+ge('iDue').value=dd.toISOString().split('T')[0];
+var nm=new Date();
+ge('sMon').value=nm.getFullYear()+'-'+String(nm.getMonth()+1).padStart(2,'0');
+
+// ─── NAV ────────────────────────────────────────────────
+function toggleNav(){
+  var l=document.querySelector('.nl');
+  if(l){l.style.cssText=l.style.display==='flex'?'':'display:flex;flex-direction:column;position:fixed;top:68px;left:0;right:0;background:#fff;padding:1rem 5%;border-bottom:1px solid #dde3f0;z-index:99';}
+}
+
+// ─── SCROLL FADE ─────────────────────────────────────────
+var obs=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.fu').forEach(function(el){obs.observe(el);});
+</script>
+</body>
+</html>
